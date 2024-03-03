@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using AutoRainAPI.Data;
 using AutoRainAPI.Models;
 using AutoRainAPI.Utils;
@@ -48,7 +49,5 @@ public class UserAuthController: ControllerBase
             return Ok(AuthenticationUtils.CreateToken(user));
         }
         return Unauthorized("email or password incorrected");
-    } 
-    [HttpGet("claimTest"), Authorize]
-
+    }
 }
