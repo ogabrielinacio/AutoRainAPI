@@ -26,5 +26,5 @@ public class User
     public byte[] Salt { get; set; } = new byte[0];
 
     [Column("devices")]
-    public List<Device>? Devices { get; set; }
+    public List<Device>? Devices { get; set; } = [];
 }

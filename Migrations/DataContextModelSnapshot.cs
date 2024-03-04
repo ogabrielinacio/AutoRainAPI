@@ -17,7 +17,7 @@ namespace AutoRainAPI.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0-preview.1.24081.2")
+                .HasAnnotation("ProductVersion", "8.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -28,22 +28,23 @@ namespace AutoRainAPI.Migrations
                         .HasColumnType("text")
                         .HasColumnName("serial_number");
 
-                    b.Property<string>("Password")
+                    b.Property<Guid?>("FKUserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.Property<byte[]>("Password")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("bytea")
                         .HasColumnName("password");
 
-                    b.Property<string>("Salt")
+                    b.Property<byte[]>("Salt")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("bytea")
                         .HasColumnName("salt");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uuid");
 
                     b.HasKey("SerialNumber");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("FKUserId");
 
                     b.ToTable("devices");
                 });
@@ -118,7 +119,8 @@ namespace AutoRainAPI.Migrations
                 {
                     b.HasOne("AutoRainAPI.Models.User", "User")
                         .WithMany("Devices")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("FKUserId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("User");
                 });

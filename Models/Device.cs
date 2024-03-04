@@ -9,12 +9,15 @@ public class Device
     [Key]
     [Column("serial_number")]
     public string SerialNumber { get; set; } = string.Empty;
-    
-    [Column("password")]
-    public string Password { get; set; } = string.Empty;
+
+    [Column("password")] 
+    public byte[] Password { get; set; } = new byte[0];
     
     [Column("salt")]
-    public string Salt { get; set; } = string.Empty;
+    public byte[] Salt { get; set; } = new byte[0];
+    
+    [Column("user_id")]
+    public Guid? FKUserId { get; set; }
     
     [Column("user")]
     public User? User { get; set; }

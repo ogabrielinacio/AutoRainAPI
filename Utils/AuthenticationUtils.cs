@@ -26,11 +26,19 @@ public class AuthenticationUtils
         }
     }
 
+    public static bool VerifyDevicePasswordHash(Device device, string password)
+    {
+        using (var hmac = new HMACSHA512(device.Salt))
+        {
+            var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            return computedHash.SequenceEqual(device.Password);
+        }
+    }
     public static string CreateToken(User user)
     {
         var claims = new List<Claim> {
             new(ClaimTypes.Role, "User"),
-            new("UserId", user.UserId.ToString()),
+            new(ClaimTypes.NameIdentifier, user.UserId.ToString()),
             new(ClaimTypes.Name, $"{user.Name} {user.LastName}"),
             new(ClaimTypes.Email, user.Email),
         };

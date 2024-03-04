@@ -31,8 +31,9 @@ public class UserAuthController: ControllerBase
             LastName = request.LastName,
             Email = request.Email,
             Password = hash,
-            Salt = salt
-        }; 
+            Salt = salt,
+        };
+        user.Devices = new List<Device>();
         await _dataContext.Users.AddAsync(user);
         await _dataContext.SaveChangesAsync();
 
