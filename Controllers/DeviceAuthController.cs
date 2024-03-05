@@ -11,16 +11,16 @@ namespace AutoRainAPI.Controllers;
 
 [Authorize(Roles = "User")]
 [ApiController]
-public class DeviceController : ControllerBase
+public class DeviceAuthController : ControllerBase
 {
    private readonly DataContext _dataContext;
 
-   public DeviceController(DataContext dataContext)
+   public DeviceAuthController(DataContext dataContext)
    {
       _dataContext = dataContext;
    }
 
-   [HttpPost("device-login")]
+   [HttpPost("device/login")]
    public async Task<IActionResult> DeviceLogin([FromBody] DeviceLoginViewModel request)
    {
        Device device = await _dataContext.Devices.Where(s => s.SerialNumber.Equals(request.SerialNumber)).FirstOrDefaultAsync();
@@ -44,7 +44,7 @@ public class DeviceController : ControllerBase
        return Ok();
    }
    
-   [HttpPost("test-device-register")]
+   [HttpPost("device/register")]
    public async Task<IActionResult> DeviceRegister([FromBody]  DeviceRegisterViewModel request) {
 
        if(_dataContext.Devices.Any(e => e.SerialNumber.Equals(request.SerialNumber)))
@@ -56,8 +56,7 @@ public class DeviceController : ControllerBase
            Password = hash,
            Salt = salt,
        };
-       // device.FKUserId = new Guid();
-       await _dataContext.Devices.AddAsync(device);
+       _dataContext.Devices.Update(device);
        await _dataContext.SaveChangesAsync();
 
        return Ok("registered Device");

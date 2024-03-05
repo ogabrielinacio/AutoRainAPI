@@ -43,12 +43,12 @@ public class UserAuthController: ControllerBase
     [HttpPost("login")]
 
     public async Task<IActionResult> Login ([FromBody] LoginViewModel request ) {
-        User user = await _dataContext.Users.Where(e => e.Email.Equals(request.Email)).FirstOrDefaultAsync();
+        User? user = await _dataContext.Users.Where(e => e.Email.Equals(request.Email)).FirstOrDefaultAsync();
         if(user == null)
             return Unauthorized("User not Found");
         if (AuthenticationUtils.VerifyPasswordHash(user, request.Password)) {
             return Ok(AuthenticationUtils.CreateToken(user));
         }
-        return Unauthorized("email or password incorrected");
+        return Unauthorized("email or password uncorrected");
     }
 }
