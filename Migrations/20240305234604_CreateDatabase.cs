@@ -49,16 +49,17 @@ namespace AutoRainAPI.Migrations
                     serial_number = table.Column<string>(type: "text", nullable: false),
                     password = table.Column<byte[]>(type: "bytea", nullable: false),
                     salt = table.Column<byte[]>(type: "bytea", nullable: false),
-                    user_id = table.Column<Guid>(type: "uuid", nullable: true)
+                    user_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_devices", x => x.serial_number);
                     table.ForeignKey(
-                        name: "FK_devices_users_user_id",
+                        name: "FK_users_user_id",
                         column: x => x.user_id,
                         principalTable: "users",
-                        principalColumn: "user_id");
+                        principalColumn: "user_id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

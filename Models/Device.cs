@@ -17,7 +17,9 @@ public class Device
     public byte[] Salt { get; set; } = new byte[0];
     
     [Column("user_id")]
-    public Guid? FKUserId { get; set; }
+    [ForeignKey("FK_users_user_id")]
+    
+    public Guid? UserId { get; set; }
     
     [Column("user")]
     public User? User { get; set; }

@@ -10,16 +10,12 @@ public class DataContext : DbContext
         
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Device>(entity =>
-            {
-                entity.HasKey("SerialNumber");
-                entity.HasOne(r => r.User)
-                    .WithMany(r => r.Devices)
-                    .HasForeignKey(r => r.FKUserId)
-                    .IsRequired(false)
-                    .OnDelete(DeleteBehavior.NoAction);
-            }
-        );
+        modelBuilder.Entity<Device>()
+            .HasOne(u => u.User)
+            .WithMany(d => d.Devices)
+            .HasForeignKey(f => f.UserId)
+            .HasConstraintName("FK_users_user_id")
+            .IsRequired();
     }
     
     public DbSet<User> Users { get; set; }

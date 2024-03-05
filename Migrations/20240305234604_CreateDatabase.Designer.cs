@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AutoRainAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240304024033_CreateDatabase")]
+    [Migration("20240305234604_CreateDatabase")]
     partial class CreateDatabase
     {
         /// <inheritdoc />
@@ -31,10 +31,6 @@ namespace AutoRainAPI.Migrations
                         .HasColumnType("text")
                         .HasColumnName("serial_number");
 
-                    b.Property<Guid?>("FKUserId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("user_id");
-
                     b.Property<byte[]>("Password")
                         .IsRequired()
                         .HasColumnType("bytea")
@@ -45,9 +41,14 @@ namespace AutoRainAPI.Migrations
                         .HasColumnType("bytea")
                         .HasColumnName("salt");
 
+                    b.Property<Guid?>("UserId")
+                        .IsRequired()
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
                     b.HasKey("SerialNumber");
 
-                    b.HasIndex("FKUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("devices");
                 });
@@ -122,8 +123,10 @@ namespace AutoRainAPI.Migrations
                 {
                     b.HasOne("AutoRainAPI.Models.User", "User")
                         .WithMany("Devices")
-                        .HasForeignKey("FKUserId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_users_user_id");
 
                     b.Navigation("User");
                 });

@@ -34,7 +34,8 @@ public class DeviceAuthController : ControllerBase
                return NotFound("User not found");
            // user.Devices ??= new List<Device>();
            // user.Devices?.Add(device);
-           device.FKUserId = user.UserId;
+           //TODO:
+           // device.FKUserId = user.UserId;
            // _dataContext.Entry(user.Devices).State = EntityState.Modified;
            await _dataContext.Devices.AddAsync(device);
            await _dataContext.SaveChangesAsync();
