@@ -8,11 +8,11 @@ public class DeviceData
 {
     [Key]
     [Column("devices_data_id")]
-    public Guid devices_data_id { get; set; }
+    public Guid DevicesDataId { get; set; }
 
     [Required]
     [Column("serial_number")]
-    public string serial_number { get; set; } = string.Empty;
+    public string SerialNumber { get; set; } = string.Empty;
 
     [Column("status")]
     public EStatus Status { get; set; }
@@ -22,5 +22,5 @@ public class DeviceData
 
     [Required]
     [Column("date")]
-    public DateTime date { get; set; }
+    public DateTime Date { get; set; }
 }
