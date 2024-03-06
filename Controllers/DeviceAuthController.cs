@@ -32,14 +32,13 @@ public class DeviceAuthController : ControllerBase
            var user = await _dataContext.Users.Where(i => i.UserId.Equals(userId)).FirstOrDefaultAsync();
            if(user == null)
                return NotFound("User not found");
-           // user.Devices ??= new List<Device>();
-           // user.Devices?.Add(device);
-           //TODO:
-           // device.FKUserId = user.UserId;
-           // _dataContext.Entry(user.Devices).State = EntityState.Modified;
-           await _dataContext.Devices.AddAsync(device);
+           if(device.UserId == userId)
+               return BadRequest("User is already the administrator of device");
+           device.UserId = userId;
+           device.User = user;
+           _dataContext.Devices.Update(device);
            await _dataContext.SaveChangesAsync();
-           return Ok($"device Added with successfully ->");
+           return Ok($"device Added with successfully ->{device.UserId} && {device.User.Name}");
        }
        return Unauthorized("Serial Number or password incorrected");
        return Ok();
@@ -57,7 +56,7 @@ public class DeviceAuthController : ControllerBase
            Password = hash,
            Salt = salt,
        };
-       _dataContext.Devices.Update(device);
+       await _dataContext.Devices.AddAsync(device);
        await _dataContext.SaveChangesAsync();
 
        return Ok("registered Device");

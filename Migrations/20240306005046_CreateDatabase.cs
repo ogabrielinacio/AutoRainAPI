@@ -49,7 +49,7 @@ namespace AutoRainAPI.Migrations
                     serial_number = table.Column<string>(type: "text", nullable: false),
                     password = table.Column<byte[]>(type: "bytea", nullable: false),
                     salt = table.Column<byte[]>(type: "bytea", nullable: false),
-                    user_id = table.Column<Guid>(type: "uuid", nullable: false)
+                    user_id = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -58,8 +58,7 @@ namespace AutoRainAPI.Migrations
                         name: "FK_users_user_id",
                         column: x => x.user_id,
                         principalTable: "users",
-                        principalColumn: "user_id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "user_id");
                 });
 
             migrationBuilder.CreateIndex(

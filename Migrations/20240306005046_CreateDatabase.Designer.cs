@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AutoRainAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240305234604_CreateDatabase")]
+    [Migration("20240306005046_CreateDatabase")]
     partial class CreateDatabase
     {
         /// <inheritdoc />
@@ -42,7 +42,6 @@ namespace AutoRainAPI.Migrations
                         .HasColumnName("salt");
 
                     b.Property<Guid?>("UserId")
-                        .IsRequired()
                         .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
@@ -124,8 +123,6 @@ namespace AutoRainAPI.Migrations
                     b.HasOne("AutoRainAPI.Models.User", "User")
                         .WithMany("Devices")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
                         .HasConstraintName("FK_users_user_id");
 
                     b.Navigation("User");

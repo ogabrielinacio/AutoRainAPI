@@ -14,8 +14,7 @@ public class DataContext : DbContext
             .HasOne(u => u.User)
             .WithMany(d => d.Devices)
             .HasForeignKey(f => f.UserId)
-            .HasConstraintName("FK_users_user_id")
-            .IsRequired();
+            .HasConstraintName("FK_users_user_id");
     }
     
     public DbSet<User> Users { get; set; }
