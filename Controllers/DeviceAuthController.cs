@@ -11,6 +11,7 @@ namespace AutoRainAPI.Controllers;
 
 [Authorize(Roles = "User")]
 [ApiController]
+[Route("device")]
 public class DeviceAuthController : ControllerBase
 {
    private readonly DataContext _dataContext;
@@ -20,7 +21,7 @@ public class DeviceAuthController : ControllerBase
       _dataContext = dataContext;
    }
 
-   [HttpPost("device/login")]
+   [HttpPost("login")]
    public async Task<IActionResult> DeviceLogin([FromBody] DeviceLoginViewModel request)
    {
        Device? device = await _dataContext.Devices.FirstOrDefaultAsync(s => s.SerialNumber.Equals(request.SerialNumber));
@@ -28,7 +29,7 @@ public class DeviceAuthController : ControllerBase
            return Unauthorized("Device not Found");
        if (AuthenticationUtils.VerifyDevicePasswordHash(device, request.Password))
        {
-           var userId = new Guid(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+           var userId = new Guid(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
            var user = await _dataContext.Users.Where(i => i.UserId.Equals(userId)).FirstOrDefaultAsync();
            if(user == null)
                return NotFound("User not found");
@@ -40,11 +41,10 @@ public class DeviceAuthController : ControllerBase
            await _dataContext.SaveChangesAsync();
            return Ok($"device Added with successfully ->{device.UserId} && {device.User.Name}");
        }
-       return Unauthorized("Serial Number or password incorrected");
-       return Ok();
+       return Unauthorized("Serial Number or password uncorrected");
    }
    
-   [HttpPost("device/register")]
+   [HttpPost("register")]
    public async Task<IActionResult> DeviceRegister([FromBody]  DeviceRegisterViewModel request) {
 
        if(_dataContext.Devices.Any(e => e.SerialNumber.Equals(request.SerialNumber)))

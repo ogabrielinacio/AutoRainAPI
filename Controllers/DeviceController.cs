@@ -14,6 +14,7 @@ namespace AutoRainAPI.Controllers;
 
 [Authorize(Roles = "User")]
 [ApiController]
+[Route("device")]
 public class DeviceController : ControllerBase
 {
    private readonly DataContext _dataContext;
@@ -23,7 +24,7 @@ public class DeviceController : ControllerBase
       _dataContext = dataContext;
    }
 
-   [HttpPost("device/mock-data")]
+   [HttpPost("mock-data")]
    public async Task<IActionResult> Mock([FromBody] DeviceLatestDataViewModel request)
    {
        Device? device =
@@ -42,7 +43,7 @@ public class DeviceController : ControllerBase
        return Ok(latestData);
    }
    
-   [HttpPost("device/latest-data")]
+   [HttpPost("latest-data")]
    public async Task<IActionResult> DeviceLatestData([FromBody] DeviceLatestDataViewModel request)
    {
        Device? device =
