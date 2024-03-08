@@ -23,7 +23,7 @@ public class DeviceAuthController : ControllerBase
    [HttpPost("device/login")]
    public async Task<IActionResult> DeviceLogin([FromBody] DeviceLoginViewModel request)
    {
-       Device device = await _dataContext.Devices.Where(s => s.SerialNumber.Equals(request.SerialNumber)).FirstOrDefaultAsync();
+       Device? device = await _dataContext.Devices.FirstOrDefaultAsync(s => s.SerialNumber.Equals(request.SerialNumber));
        if(device == null)
            return Unauthorized("Device not Found");
        if (AuthenticationUtils.VerifyDevicePasswordHash(device, request.Password))

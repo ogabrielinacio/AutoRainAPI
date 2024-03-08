@@ -26,7 +26,8 @@ public class DeviceController : ControllerBase
    [HttpPost("device/mock-data")]
    public async Task<IActionResult> Mock([FromBody] DeviceLatestDataViewModel request)
    {
-       Device? device = await _dataContext.Devices.Where(s => s.SerialNumber.Equals(request.SerialNumber)).FirstOrDefaultAsync();
+       Device? device =
+           await _dataContext.Devices.FirstOrDefaultAsync(s => s.SerialNumber.Equals(request.SerialNumber));
        if(device == null)
            return BadRequest("Device not Found");
        DeviceData latestData = new DeviceData
@@ -44,7 +45,8 @@ public class DeviceController : ControllerBase
    [HttpPost("device/latest-data")]
    public async Task<IActionResult> DeviceLatestData([FromBody] DeviceLatestDataViewModel request)
    {
-       Device? device = await _dataContext.Devices.Where(s => s.SerialNumber.Equals(request.SerialNumber)).FirstOrDefaultAsync();
+       Device? device =
+           await _dataContext.Devices.FirstOrDefaultAsync(s => s.SerialNumber.Equals(request.SerialNumber));
        if(device == null)
            return BadRequest("Device not Found");
        DeviceData? latestData = await _dataContext.DeviceData.Where(s => s.SerialNumber.Equals(request.SerialNumber)).OrderBy(d => d.Date).LastOrDefaultAsync();

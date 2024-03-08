@@ -42,8 +42,9 @@ public class UserAuthController: ControllerBase
 
     [HttpPost("login")]
 
-    public async Task<IActionResult> Login ([FromBody] LoginViewModel request ) {
-        User? user = await _dataContext.Users.Where(e => e.Email.Equals(request.Email)).FirstOrDefaultAsync();
+    public async Task<IActionResult> Login ([FromBody] LoginViewModel request )
+    {
+        User? user = await _dataContext.Users.FirstOrDefaultAsync(e => e.Email.Equals(request.Email));
         if(user == null)
             return Unauthorized("User not Found");
         if (AuthenticationUtils.VerifyPasswordHash(user, request.Password)) {
