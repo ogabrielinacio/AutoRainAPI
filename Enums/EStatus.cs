@@ -1,4 +1,4 @@
-namespace AutoRainAPI.Enums;
+namespace SmartIrrigatorAPI.Enums;
 
 public enum EStatus
 {

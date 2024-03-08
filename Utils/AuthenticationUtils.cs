@@ -1,10 +1,10 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using AutoRainAPI.Models;
 using Microsoft.IdentityModel.Tokens;
+using SmartIrrigatorAPI.Models;
 
-namespace AutoRainAPI.Utils;
+namespace SmartIrrigatorAPI.Utils;
 
 public class AuthenticationUtils
 {

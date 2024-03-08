@@ -1,13 +1,13 @@
 using System.Security.Claims;
-using AutoRainAPI.Data;
-using AutoRainAPI.Models;
-using AutoRainAPI.Utils;
-using AutoRainAPI.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SmartIrrigatorAPI.Data;
+using SmartIrrigatorAPI.Models;
+using SmartIrrigatorAPI.Utils;
+using SmartIrrigatorAPI.ViewModels;
 
-namespace AutoRainAPI.Controllers;
+namespace SmartIrrigatorAPI.Controllers;
 
 [ApiController]
 public class UserAuthController: ControllerBase

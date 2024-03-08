@@ -1,4 +1,4 @@
-namespace AutoRainAPI.ViewModels;
+namespace SmartIrrigatorAPI.ViewModels;
 
 public class DeviceLatestDataViewModel
 {

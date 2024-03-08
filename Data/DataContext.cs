@@ -1,7 +1,7 @@
-using AutoRainAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using SmartIrrigatorAPI.Models;
 
-namespace AutoRainAPI.Data;
+namespace SmartIrrigatorAPI.Data;
 
 public class DataContext : DbContext
 {

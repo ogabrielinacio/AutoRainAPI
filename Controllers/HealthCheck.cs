@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace AutoRainAPI.Controllers;
+namespace SmartIrrigatorAPI.Controllers;
 
 [ApiController]
 public class HealthCheck : ControllerBase

@@ -1,6 +1,6 @@
 using System.Reflection;
-using AutoRainAPI.Data;
-using AutoRainAPI.Utils;
+using SmartIrrigatorAPI.Data;
+using SmartIrrigatorAPI.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -20,8 +20,8 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(options =>
 {
-    options.SwaggerDoc("autorainapi-doc", new OpenApiInfo {
-        Title = "AutoRainAPI",
+    options.SwaggerDoc("/smart-irrigator-api-doc", new OpenApiInfo {
+        Title = "SmartIrrigatorAPI",
         Description = "API for AutoRain Device",
         Version = "v1" 
     });
@@ -76,7 +76,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
-        options.SwaggerEndpoint("/swagger/autorainapi-doc/swagger.json", "AutoRainAPI v1"); 
+        options.SwaggerEndpoint("/swagger/smart-irrigator-api-doc/swagger.json", "SmartIrrigatorAPI v1"); 
     });
 }
 

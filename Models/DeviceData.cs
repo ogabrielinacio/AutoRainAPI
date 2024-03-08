@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using AutoRainAPI.Enums;
+using SmartIrrigatorAPI.Enums;
 
-namespace AutoRainAPI.Models;
+namespace SmartIrrigatorAPI.Models;
 [Table("devices_data")]
 public class DeviceData
 {

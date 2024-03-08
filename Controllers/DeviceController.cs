@@ -1,16 +1,15 @@
 using System.Security.Claims;
-using AutoRainAPI.Data;
-using AutoRainAPI.Enums;
-using AutoRainAPI.Models;
-using AutoRainAPI.Utils;
-using AutoRainAPI.ViewModels;
+using SmartIrrigatorAPI.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SmartIrrigatorAPI.Data;
+using SmartIrrigatorAPI.Enums;
+using SmartIrrigatorAPI.Models;
+using SmartIrrigatorAPI.ViewModels;
 
 
-
-namespace AutoRainAPI.Controllers;
+namespace SmartIrrigatorAPI.Controllers;
 
 [Authorize(Roles = "User")]
 [ApiController]

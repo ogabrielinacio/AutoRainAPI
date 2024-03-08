@@ -1,4 +1,4 @@
-namespace AutoRainAPI.Utils;
+namespace SmartIrrigatorAPI.Utils;
 
 public class DatabaseUtils
 {
