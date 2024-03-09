@@ -20,7 +20,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(options =>
 {
-    options.SwaggerDoc("/smart-irrigator-api-doc", new OpenApiInfo {
+    options.SwaggerDoc("smart-irrigator-api-doc", new OpenApiInfo {
         Title = "SmartIrrigatorAPI",
         Description = "API for AutoRain Device",
         Version = "v1" 

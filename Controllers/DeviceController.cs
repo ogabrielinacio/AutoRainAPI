@@ -11,8 +11,8 @@ using SmartIrrigatorAPI.ViewModels;
 
 namespace SmartIrrigatorAPI.Controllers;
 
-[Authorize(Roles = "User")]
 [ApiController]
+[Authorize(Roles = "User")]
 [Route("device")]
 public class DeviceController : ControllerBase
 {
@@ -49,9 +49,59 @@ public class DeviceController : ControllerBase
            await _dataContext.Devices.FirstOrDefaultAsync(s => s.SerialNumber.Equals(request.SerialNumber));
        if(device == null)
            return BadRequest("Device not Found");
-       DeviceData? latestData = await _dataContext.DeviceData.Where(s => s.SerialNumber.Equals(request.SerialNumber)).OrderBy(d => d.Date).LastOrDefaultAsync();
-       if (latestData == null)
+       
+       Guid userId = new Guid(User.Claims.First(
+           c => c.Type == ClaimTypes.NameIdentifier).Value);
+
+       Device? userPermission = await _dataContext.Devices.FirstOrDefaultAsync(d => 
+           d.UserId.Equals(userId));
+       if(userPermission == null) 
+           return Unauthorized("You don't have permission to make requests on this device");
+       
+       DeviceData? deviceData = await _dataContext.DeviceData.Where(
+           s => s.SerialNumber.Equals(request.SerialNumber))
+           .OrderBy(d => d.Date).LastOrDefaultAsync();
+       if (deviceData == null)
            return NoContent();
+       var latestData = new DeviceDataViewModel {
+           SerialNumber = deviceData.SerialNumber,
+           Status = deviceData.Status,
+           SoilMoisture = deviceData.SoilMoisture,
+           Date = deviceData.Date
+       };
        return Ok(latestData);
+   }
+
+   [HttpPost("history")]
+   public async Task<ActionResult> DeviceHistory([FromBody] DeviceHistoryViewModel request)
+   {
+       Device? device =
+           await _dataContext.Devices.FirstOrDefaultAsync(s => s.SerialNumber.Equals(request.SerialNumber));
+       if(device == null)
+           return BadRequest("Device not Found");
+       
+       Guid userId = new Guid(User.Claims.First(
+           c => c.Type == ClaimTypes.NameIdentifier).Value);
+
+       Device? userPermission = await _dataContext.Devices.FirstOrDefaultAsync(d => 
+           d.UserId.Equals(userId));
+       if(userPermission == null) 
+           return Unauthorized("You don't have permission to make requests on this device");
+       List<DeviceData>? historyData = await _dataContext.DeviceData.Where(
+               d => d.SerialNumber.Equals(request.SerialNumber) 
+                    && DateTime.Compare(d.Date, request.StartDate) >= 0 
+                    && DateTime.Compare(d.Date, request.EndDate) <= 0 )
+           .OrderBy(d => d.Date).ToListAsync();
+       List<DeviceDataViewModel> historyDataViewModel = new List<DeviceDataViewModel>();
+       historyData.ForEach(v => {
+           var deviceData = new DeviceDataViewModel {
+               SerialNumber = v.SerialNumber,
+               Status = v.Status,
+               SoilMoisture = v.SoilMoisture,
+               Date = v.Date
+           };
+           historyDataViewModel.Add(deviceData);
+       });
+       return Ok(historyDataViewModel);
    }
 }
