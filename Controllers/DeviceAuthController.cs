@@ -21,8 +21,26 @@ public class DeviceAuthController : ControllerBase
       _dataContext = dataContext;
    }
 
-   [HttpPost("login")]
-   public async Task<IActionResult> DeviceLogin([FromBody] DeviceLoginViewModel request)
+   [HttpPost("register")]
+   public async Task<IActionResult> DeviceRegister([FromBody]  DeviceRegisterViewModel request) {
+
+       if(_dataContext.Devices.Any(e => e.SerialNumber.Equals(request.SerialNumber)))
+           return BadRequest("Serial Number already registered");
+       AuthenticationUtils.CreatePasswordHash(request.Password, out byte[] hash, out byte[] salt);
+       var device = new Device
+       {
+           SerialNumber = request.SerialNumber,
+           Password = hash,
+           Salt = salt,
+       };
+       await _dataContext.Devices.AddAsync(device);
+       await _dataContext.SaveChangesAsync();
+
+       return Ok("registered Device");
+   }
+   
+   [HttpPost("add")]
+   public async Task<IActionResult> DeviceAdd([FromBody] DeviceAddViewModel request)
    {
        Device? device = await _dataContext.Devices.FirstOrDefaultAsync(s => s.SerialNumber.Equals(request.SerialNumber));
        if(device == null)
@@ -44,21 +62,9 @@ public class DeviceAuthController : ControllerBase
        return Unauthorized("Serial Number or password uncorrected");
    }
    
-   [HttpPost("register")]
-   public async Task<IActionResult> DeviceRegister([FromBody]  DeviceRegisterViewModel request) {
-
-       if(_dataContext.Devices.Any(e => e.SerialNumber.Equals(request.SerialNumber)))
-           return BadRequest("Serial Number already registered");
-       AuthenticationUtils.CreatePasswordHash(request.Password, out byte[] hash, out byte[] salt);
-       var device = new Device
-       {
-           SerialNumber = request.SerialNumber,
-           Password = hash,
-           Salt = salt,
-       };
-       await _dataContext.Devices.AddAsync(device);
-       await _dataContext.SaveChangesAsync();
-
-       return Ok("registered Device");
+   [HttpPost("remove")]
+   public async Task<IActionResult> DeviceRemove([FromBody] DeviceAddViewModel request)
+   {
+       return Ok();
    }
 }
