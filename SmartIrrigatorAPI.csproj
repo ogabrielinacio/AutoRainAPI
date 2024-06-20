@@ -22,24 +22,28 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Remove="Services\**" />
     <Compile Remove="Migrations\DataContextModelSnapshot.cs" />
+    <Compile Remove="Dtos\**" />
+    <Compile Remove="Migrations\**" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Remove="Services\**" />
+    <EmbeddedResource Remove="Dtos\**" />
+    <EmbeddedResource Remove="Migrations\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Remove="Services\**" />
+    <Content Remove="Dtos\**" />
+    <Content Remove="Migrations\**" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="Services\**" />
+    <None Remove="Dtos\**" />
+    <None Remove="Migrations\**" />
   </ItemGroup>
 
 </Project>

@@ -11,7 +11,7 @@ public class Device
     
     public byte[] Salt { get; set; } = Array.Empty<byte>();
     
-    public Guid? UserId { get; set; }
+    public Guid UserId { get; set; } = new Guid();
     
     public User? User { get; set; }
 }

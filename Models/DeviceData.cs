@@ -6,7 +6,7 @@ namespace SmartIrrigatorAPI.Models;
 public class DeviceData
 {
     [Key]
-    public Guid DevicesDataId { get; set; }
+    public Guid DeviceDataId { get; set; }
 
     [Required]
     public string SerialNumber { get; set; } = string.Empty;

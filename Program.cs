@@ -29,7 +29,7 @@ builder.Services.AddSwaggerGen(options =>
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     
     options.IncludeXmlComments(xmlPath);
-    
+
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
         Description = "Bearer Token Pattern; Example: \"Bearer {token}\"",
         Name = "Authorization",

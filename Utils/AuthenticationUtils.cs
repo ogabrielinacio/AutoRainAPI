@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using Microsoft.IdentityModel.Tokens;
 using SmartIrrigatorAPI.Models;
 
@@ -55,7 +56,25 @@ public class AuthenticationUtils
         
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+    
+    public static bool IsEmailValid(string email)
+    {
+        string emailRegex = @"^[^@\s]+@[^@\s]+\.(com|net|org|gov)(\.[a-z]{2})?$";
+        string? env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+        return Regex.IsMatch(email, emailRegex, RegexOptions.None);
+    }
 
+    public static bool IsSerialNumberValid(string serialNumber)
+    {
+        string serialNumberRegex = "^[0-9]+-[0-9]+$";
+        return Regex.IsMatch(serialNumber, serialNumberRegex, RegexOptions.None);
+    }
+
+    public static bool IsPasswordStrong(string password)
+    {
+        string strongPasswordRegex = @"(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$";
+        return Regex.IsMatch(password, strongPasswordRegex, RegexOptions.None);
+    }
     public static string GetSecretKey() =>
          Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") is "Production"
             ? Environment.GetEnvironmentVariable("SECRET_TOKEN")!

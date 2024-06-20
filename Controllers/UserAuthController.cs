@@ -23,8 +23,12 @@ public class UserAuthController: ControllerBase
 
     public async Task<IActionResult> Register([FromBody] RegisterViewModel request) {
 
+        if (!AuthenticationUtils.IsEmailValid(request.Email))
+            return BadRequest("Email is invalid" );
         if(_dataContext.Users.Any(e => e.Email.Equals(request.Email)))
             return BadRequest("Email already registered");
+        if (!AuthenticationUtils.IsPasswordStrong(request.Password))
+            return BadRequest("Password too weak" );
         AuthenticationUtils.CreatePasswordHash(request.Password, out byte[] hash, out byte[] salt);
         var user = new User{
             Name = request.Name,
@@ -32,8 +36,8 @@ public class UserAuthController: ControllerBase
             Email = request.Email,
             Password = hash,
             Salt = salt,
+            Devices = new List<Device>()
         };
-        user.Devices = new List<Device>();
         await _dataContext.Users.AddAsync(user);
         await _dataContext.SaveChangesAsync();
 
