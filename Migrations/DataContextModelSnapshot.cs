@@ -35,7 +35,7 @@ namespace SmartIrrigatorAPI.Migrations
                         .IsRequired()
                         .HasColumnType("bytea");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("SerialNumber");
@@ -47,7 +47,7 @@ namespace SmartIrrigatorAPI.Migrations
 
             modelBuilder.Entity("SmartIrrigatorAPI.Models.DeviceData", b =>
                 {
-                    b.Property<Guid>("DevicesDataId")
+                    b.Property<Guid>("DeviceDataId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
@@ -64,7 +64,7 @@ namespace SmartIrrigatorAPI.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
-                    b.HasKey("DevicesDataId");
+                    b.HasKey("DeviceDataId");
 
                     b.ToTable("DeviceData");
                 });
@@ -104,7 +104,9 @@ namespace SmartIrrigatorAPI.Migrations
                 {
                     b.HasOne("SmartIrrigatorAPI.Models.User", "User")
                         .WithMany("Devices")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });

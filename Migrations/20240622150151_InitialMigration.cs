@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SmartIrrigatorAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateDatabase : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,7 +15,7 @@ namespace SmartIrrigatorAPI.Migrations
                 name: "DeviceData",
                 columns: table => new
                 {
-                    DevicesDataId = table.Column<Guid>(type: "uuid", nullable: false),
+                    DeviceDataId = table.Column<Guid>(type: "uuid", nullable: false),
                     SerialNumber = table.Column<string>(type: "text", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     SoilMoisture = table.Column<int>(type: "integer", nullable: false),
@@ -23,7 +23,7 @@ namespace SmartIrrigatorAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DeviceData", x => x.DevicesDataId);
+                    table.PrimaryKey("PK_DeviceData", x => x.DeviceDataId);
                 });
 
             migrationBuilder.CreateTable(
@@ -49,7 +49,7 @@ namespace SmartIrrigatorAPI.Migrations
                     SerialNumber = table.Column<string>(type: "text", nullable: false),
                     Password = table.Column<byte[]>(type: "bytea", nullable: false),
                     Salt = table.Column<byte[]>(type: "bytea", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: true)
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false, defaultValue: new Guid())
                 },
                 constraints: table =>
                 {
@@ -58,7 +58,8 @@ namespace SmartIrrigatorAPI.Migrations
                         name: "FK_Devices_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "UserId");
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
